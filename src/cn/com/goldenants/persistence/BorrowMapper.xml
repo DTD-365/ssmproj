@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.goldenants.dao.BorrowMapper" >
+  <resultMap id="BaseResultMap" type="cn.com.goldenants.model.Borrow" >
+    <id column="borrow_uuid" property="borrowUuid" jdbcType="VARCHAR" />
+    <result column="borrow_nid" property="borrowNid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="start_dt" property="startDt" jdbcType="DATE" />
+    <result column="end_dt" property="endDt" jdbcType="DATE" />
+    <result column="delivery_dt" property="deliveryDt" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="interest_rate" property="interestRate" jdbcType="DECIMAL" />
+    <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+    <result column="sub_status" property="subStatus" jdbcType="VARCHAR" />
+    <result column="change" property="change" jdbcType="INTEGER" />
+    <result column="last_update" property="lastUpdate" jdbcType="TIMESTAMP" />
+    <result column="add_time" property="addTime" jdbcType="DATE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="cn.com.goldenants.model.BorrowWithBLOBs" extends="BaseResultMap" >
+    <result column="descp" property="descp" jdbcType="LONGVARCHAR" />
+    <result column="pawn" property="pawn" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    borrow_uuid, borrow_nid, name, period, start_dt, end_dt, delivery_dt, type, amount, 
+    interest_rate, id_no, sub_status, change, last_update, add_time, status
+  </sql>
+  <sql id="Blob_Column_List" >
+    descp, pawn
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="cn.com.goldenants.model.BorrowExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dtd_borrow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="cn.com.goldenants.model.BorrowExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dtd_borrow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from dtd_borrow
+    where borrow_uuid = #{borrowUuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dtd_borrow
+    where borrow_uuid = #{borrowUuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="cn.com.goldenants.model.BorrowExample" >
+    delete from dtd_borrow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="cn.com.goldenants.model.BorrowWithBLOBs" >
+    insert into dtd_borrow (borrow_uuid, borrow_nid, name, 
+      period, start_dt, end_dt, delivery_dt, 
+      type, amount, interest_rate, 
+      id_no, sub_status, change, 
+      last_update, add_time, status, 
+      descp, pawn)
+    values (#{borrowUuid,jdbcType=VARCHAR}, #{borrowNid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{period,jdbcType=INTEGER}, #{startDt,jdbcType=DATE}, #{endDt,jdbcType=DATE}, #{deliveryDt,jdbcType=DATE}, 
+      #{type,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{interestRate,jdbcType=DECIMAL}, 
+      #{idNo,jdbcType=VARCHAR}, #{subStatus,jdbcType=VARCHAR}, #{change,jdbcType=INTEGER}, 
+      #{lastUpdate,jdbcType=TIMESTAMP}, #{addTime,jdbcType=DATE}, #{status,jdbcType=VARCHAR}, 
+      #{descp,jdbcType=LONGVARCHAR}, #{pawn,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.goldenants.model.BorrowWithBLOBs" >
+    insert into dtd_borrow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="borrowUuid != null" >
+        borrow_uuid,
+      </if>
+      <if test="borrowNid != null" >
+        borrow_nid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="period != null" >
+        period,
+      </if>
+      <if test="startDt != null" >
+        start_dt,
+      </if>
+      <if test="endDt != null" >
+        end_dt,
+      </if>
+      <if test="deliveryDt != null" >
+        delivery_dt,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="interestRate != null" >
+        interest_rate,
+      </if>
+      <if test="idNo != null" >
+        id_no,
+      </if>
+      <if test="subStatus != null" >
+        sub_status,
+      </if>
+      <if test="change != null" >
+        change,
+      </if>
+      <if test="lastUpdate != null" >
+        last_update,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="descp != null" >
+        descp,
+      </if>
+      <if test="pawn != null" >
+        pawn,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="borrowUuid != null" >
+        #{borrowUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowNid != null" >
+        #{borrowNid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="startDt != null" >
+        #{startDt,jdbcType=DATE},
+      </if>
+      <if test="endDt != null" >
+        #{endDt,jdbcType=DATE},
+      </if>
+      <if test="deliveryDt != null" >
+        #{deliveryDt,jdbcType=DATE},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestRate != null" >
+        #{interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="idNo != null" >
+        #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="subStatus != null" >
+        #{subStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="change != null" >
+        #{change,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdate != null" >
+        #{lastUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="descp != null" >
+        #{descp,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pawn != null" >
+        #{pawn,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="cn.com.goldenants.model.BorrowExample" resultType="java.lang.Integer" >
+    select count(*) from dtd_borrow
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dtd_borrow
+    <set >
+      <if test="record.borrowUuid != null" >
+        borrow_uuid = #{record.borrowUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.borrowNid != null" >
+        borrow_nid = #{record.borrowNid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.period != null" >
+        period = #{record.period,jdbcType=INTEGER},
+      </if>
+      <if test="record.startDt != null" >
+        start_dt = #{record.startDt,jdbcType=DATE},
+      </if>
+      <if test="record.endDt != null" >
+        end_dt = #{record.endDt,jdbcType=DATE},
+      </if>
+      <if test="record.deliveryDt != null" >
+        delivery_dt = #{record.deliveryDt,jdbcType=DATE},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interestRate != null" >
+        interest_rate = #{record.interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.idNo != null" >
+        id_no = #{record.idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subStatus != null" >
+        sub_status = #{record.subStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.change != null" >
+        change = #{record.change,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastUpdate != null" >
+        last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=DATE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.descp != null" >
+        descp = #{record.descp,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.pawn != null" >
+        pawn = #{record.pawn,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update dtd_borrow
+    set borrow_uuid = #{record.borrowUuid,jdbcType=VARCHAR},
+      borrow_nid = #{record.borrowNid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      period = #{record.period,jdbcType=INTEGER},
+      start_dt = #{record.startDt,jdbcType=DATE},
+      end_dt = #{record.endDt,jdbcType=DATE},
+      delivery_dt = #{record.deliveryDt,jdbcType=DATE},
+      type = #{record.type,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      interest_rate = #{record.interestRate,jdbcType=DECIMAL},
+      id_no = #{record.idNo,jdbcType=VARCHAR},
+      sub_status = #{record.subStatus,jdbcType=VARCHAR},
+      change = #{record.change,jdbcType=INTEGER},
+      last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+      add_time = #{record.addTime,jdbcType=DATE},
+      status = #{record.status,jdbcType=VARCHAR},
+      descp = #{record.descp,jdbcType=LONGVARCHAR},
+      pawn = #{record.pawn,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dtd_borrow
+    set borrow_uuid = #{record.borrowUuid,jdbcType=VARCHAR},
+      borrow_nid = #{record.borrowNid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      period = #{record.period,jdbcType=INTEGER},
+      start_dt = #{record.startDt,jdbcType=DATE},
+      end_dt = #{record.endDt,jdbcType=DATE},
+      delivery_dt = #{record.deliveryDt,jdbcType=DATE},
+      type = #{record.type,jdbcType=INTEGER},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      interest_rate = #{record.interestRate,jdbcType=DECIMAL},
+      id_no = #{record.idNo,jdbcType=VARCHAR},
+      sub_status = #{record.subStatus,jdbcType=VARCHAR},
+      change = #{record.change,jdbcType=INTEGER},
+      last_update = #{record.lastUpdate,jdbcType=TIMESTAMP},
+      add_time = #{record.addTime,jdbcType=DATE},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.goldenants.model.BorrowWithBLOBs" >
+    update dtd_borrow
+    <set >
+      <if test="borrowNid != null" >
+        borrow_nid = #{borrowNid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        period = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="startDt != null" >
+        start_dt = #{startDt,jdbcType=DATE},
+      </if>
+      <if test="endDt != null" >
+        end_dt = #{endDt,jdbcType=DATE},
+      </if>
+      <if test="deliveryDt != null" >
+        delivery_dt = #{deliveryDt,jdbcType=DATE},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestRate != null" >
+        interest_rate = #{interestRate,jdbcType=DECIMAL},
+      </if>
+      <if test="idNo != null" >
+        id_no = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="subStatus != null" >
+        sub_status = #{subStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="change != null" >
+        change = #{change,jdbcType=INTEGER},
+      </if>
+      <if test="lastUpdate != null" >
+        last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=DATE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="descp != null" >
+        descp = #{descp,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="pawn != null" >
+        pawn = #{pawn,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where borrow_uuid = #{borrowUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cn.com.goldenants.model.BorrowWithBLOBs" >
+    update dtd_borrow
+    set borrow_nid = #{borrowNid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      period = #{period,jdbcType=INTEGER},
+      start_dt = #{startDt,jdbcType=DATE},
+      end_dt = #{endDt,jdbcType=DATE},
+      delivery_dt = #{deliveryDt,jdbcType=DATE},
+      type = #{type,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      interest_rate = #{interestRate,jdbcType=DECIMAL},
+      id_no = #{idNo,jdbcType=VARCHAR},
+      sub_status = #{subStatus,jdbcType=VARCHAR},
+      change = #{change,jdbcType=INTEGER},
+      last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=DATE},
+      status = #{status,jdbcType=VARCHAR},
+      descp = #{descp,jdbcType=LONGVARCHAR},
+      pawn = #{pawn,jdbcType=LONGVARCHAR}
+    where borrow_uuid = #{borrowUuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.goldenants.model.Borrow" >
+    update dtd_borrow
+    set borrow_nid = #{borrowNid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      period = #{period,jdbcType=INTEGER},
+      start_dt = #{startDt,jdbcType=DATE},
+      end_dt = #{endDt,jdbcType=DATE},
+      delivery_dt = #{deliveryDt,jdbcType=DATE},
+      type = #{type,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      interest_rate = #{interestRate,jdbcType=DECIMAL},
+      id_no = #{idNo,jdbcType=VARCHAR},
+      sub_status = #{subStatus,jdbcType=VARCHAR},
+      change = #{change,jdbcType=INTEGER},
+      last_update = #{lastUpdate,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=DATE},
+      status = #{status,jdbcType=VARCHAR}
+    where borrow_uuid = #{borrowUuid,jdbcType=VARCHAR}
+  </update>
+</mapper>
